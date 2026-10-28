@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOVA X1 — Simulador de Drone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark"><span></span><span></span><span></span><span></span></div>
+          <div>
+            <strong>NOVA<span>X1</span></strong>
+            <small>FLIGHT SYSTEMS</small>
+          </div>
+        </div>
+        <div class="mission-status"><i></i><span>SISTEMA ONLINE</span><b>14:32:08</b></div>
+        <button class="icon-button" id="settingsBtn" aria-label="Configurações">
+          <svg viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-2.6V20a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L7.6 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 6.4 14h-.2v-2.5h.2A1.7 1.7 0 0 0 8 10.5a1.7 1.7 0 0 0-.3-1.9L7.6 8.5l1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6v-.2H15v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2V14H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+        </button>
+      </header>
+
+      <section class="workspace">
+        <aside class="left-panel panel">
+          <div class="panel-heading"><span>01</span><strong>DADOS DE VOO</strong></div>
+          <div class="metric-grid">
+            <div class="metric"><small>ALTITUDE</small><strong><span id="altitude">42.8</span><em> m</em></strong><div class="spark-bars" id="altBars"></div></div>
+            <div class="metric"><small>VELOCIDADE</small><strong><span id="speed">18.4</span><em> m/s</em></strong><div class="spark-bars gold" id="speedBars"></div></div>
+            <div class="metric"><small>ACELERAÇÃO</small><strong><span id="acceleration">2.4</span><em> m/s²</em></strong></div>
+            <div class="metric"><small>HEAD. YAW</small><strong><span id="yawValue">034</span><em> °</em></strong></div>
+          </div>
+
+          <div class="subheading"><span>CONTROLE DE VOO</span></div>
+          <div class="control-stack">
+            <label><span>Aceleração <b id="throttleLabel">68%</b></span><input id="throttle" type="range" min="0" max="100" value="68" /></label>
+            <label><span>Inclinação <b id="pitchLabel">12°</b></span><input id="pitch" type="range" min="-30" max="30" value="12" /></label>
+            <label><span>Direção (yaw) <b id="yawLabel">34°</b></span><input id="yaw" type="range" min="0" max="360" value="34" /></label>
+          </div>
+        </aside>
+
+        <section class="viewport">
+          <div class="viewport-top">
+            <div class="view-tabs">
+              <button class="active" data-mode="flight">VISÃO DE VOO</button>
+              <button data-mode="inspection">INSPEÇÃO</button>
+            </div>
+            <div class="recording"><i></i> GRAVANDO</div>
+          </div>
+          <div class="scene" id="scene">
+            <div class="sky-glow"></div>
+            <div class="horizon"><span></span><span></span></div>
+            <div class="altitude-scale"><span>60</span><span>45</span><span>30</span><span>15</span><span>0</span></div>
+            <div class="drone-wrap" id="droneWrap">
+              <svg class="drone" viewBox="0 0 700 430" role="img" aria-label="Drone NOVA X1">
+                <defs>
+                  <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dce6e8"/><stop offset=".55" stop-color="#74848a"/><stop offset="1" stop-color="#26343a"/></linearGradient>
+                  <linearGradient id="darkGrad" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#536268"/><stop offset="1" stop-color="#11191c"/></linearGradient>
+                  <filter id="shadow"><feGaussianBlur stdDeviation="14"/></filter>
+                </defs>
+                <ellipse cx="350" cy="340" rx="210" ry="20" fill="#050909" opacity=".55" filter="url(#shadow)" class="ground-shadow"/>
+                <g class="arms">
+                  <path d="M290 250 148 130 115 148 255 270Z" fill="url(#darkGrad)" stroke="#819096" stroke-width="3"/>
+                  <path d="M410 250 552 130 585 148 445 270Z" fill="url(#darkGrad)" stroke="#819096" stroke-width="3"/>
+                  <path d="M284 274 122 310 112 290 270 248Z" fill="url(#darkGrad)" stroke="#819096" stroke-width="3"/>
+                  <path d="M416 274 578 310 588 290 430 248Z" fill="url(#darkGrad)" stroke="#819096" stroke-width="3"/>
+                </g>
+                <g class="motors">
+                  <g transform="translate(112 145)"><ellipse rx="78" ry="15" fill="#9ef01a" opacity=".12"/><circle r="29" fill="#1b2528" stroke="#718084" stroke-width="5"/><circle r="18" fill="#0d1416"/><circle r="6" fill="#b9cbcf"/><g class="rotor rotor-a"><ellipse rx="94" ry="9" fill="#a8b4b7" opacity=".55"/><ellipse rx="9" ry="94" fill="#a8b4b7" opacity=".45"/></g></g>
+                  <g transform="translate(588 145)"><ellipse rx="78" ry="15" fill="#9ef01a" opacity=".12"/><circle r="29" fill="#1b2528" stroke="#718084" stroke-width="5"/><circle r="18" fill="#0d1416"/><circle r="6" fill="#b9cbcf"/><g class="rotor rotor-b"><ellipse rx="94" ry="9" fill="#a8b4b7" opacity=".55"/><ellipse rx="9" ry="94" fill="#a8b4b7" opacity=".45"/></g></g>
+                  <g transform="translate(112 300)"><circle r="29" fill="#1b2528" stroke="#718084" stroke-width="5"/><circle r="18" fill="#0d1416"/><circle r="6" fill="#b9cbcf"/><g class="rotor rotor-b"><ellipse rx="94" ry="9" fill="#a8b4b7" opacity=".55"/><ellipse rx="9" ry="94" fill="#a8b4b7" opacity=".45"/></g></g>
+                  <g transform="translate(588 300)"><circle r="29" fill="#1b2528" stroke="#718084" stroke-width="5"/><circle r="18" fill="#0d1416"/><circle r="6" fill="#b9cbcf"/><g class="rotor rotor-a"><ellipse rx="94" ry="9" fill="#a8b4b7" opacity=".55"/><ellipse rx="9" ry="94" fill="#a8b4b7" opacity=".45"/></g></g>
+                </g>
+                <g class="main-body">
+                  <path d="M278 190 314 144 386 144 422 190 438 266 398 318 302 318 262 266Z" fill="url(#bodyGrad)" stroke="#b4c0c2" stroke-width="4"/>
+                  <path d="M314 144 350 124 386 144 372 188H328Z" fill="#e8eeee" stroke="#aebabc" stroke-width="3"/>
+                  <path d="M302 318 398 318 382 346H318Z" fill="#263238" stroke="#68777b" stroke-width="3"/>
+                  <rect x="328" y="178" width="44" height="94" rx="20" fill="#172225" stroke="#9eb0b4" stroke-width="4"/>
+                  <rect x="337" y="188" width="26" height="48" rx="13" fill="#090d0e"/>
+                  <circle cx="350" cy="210" r="9" fill="#9ef01a"/>
+                  <circle cx="350" cy="210" r="3" fill="#eaffc7"/>
+                  <path d="M328 269h44v12h-44z" fill="#0e1517"/>
+                  <path d="M338 281h24v22h-24z" fill="#263236" stroke="#8a999c" stroke-width="2"/>
+                  <path d="M322 307v28M378 307v28" stroke="#9aa8aa" stroke-width="5"/>
+                  <ellipse cx="350" cy="204" rx="66" ry="8" fill="#ffffff" opacity=".12"/>
+                </g>
+                <g class="status-lights">
+                  <circle cx="278" cy="254" r="7" fill="#ff4b3e"/><circle cx="422" cy="254" r="7" fill="#9ef01a"/>
+                </g>
+                <g class="inspection-hotspots">
+                  <g class="hotspot" data-part="motores" transform="translate(112 145)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="camera" transform="translate(350 210)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="bateria" transform="translate(350 286)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="gps" transform="translate(350 155)"><circle r="16"/><circle r="7"/></g>
+                </g>
+              </svg>
+            </div>
+            <div class="crosshair"><span></span><span></span><i></i></div>
+            <div class="part-card" id="partCard">
+              <button id="closePart" aria-label="Fechar">×</button>
+              <small>COMPONENTE</small>
+              <strong id="partName">Câmera stabilizada 4K</strong>
+              <div class="part-spec"><span id="partSpec">Gimbal 3 eixos</span><b id="partStatus">OK</b></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="right-panel panel">
+          <div class="panel-heading"><span>02</span><strong>SISTEMAS</strong></div>
+          <div class="system-list">
+            <div class="system-row"><div class="battery-icon"><i></i></div><div><small>BATERIA</small><strong><span id="battery">86</span>%</strong></div><span class="status-pill">ÓTIMO</span></div>
+            <div class="system-row"><div class="gps-icon"><i></i></div><div><small>GPS / GNSS</small><strong>12 <em>SAT</em></strong></div><span class="status-pill">FIX</span></div>
+            <div class="system-row"><div class="signal-bars"><i></i><i></i><i></i><i></i></div><div><small>SINAL RC</small><strong><span id="signal">98</span> <em>%</em></strong></div><span class="status-pill">FORTe</span></div>
+          </div>
+
+          <div class="subheading"><span>ESTADO DOS MOTORES</span></div>
+          <div class="motor-grid">
+            <div><span>M1</span><b>98%</b><i style="--v:98%"></i></div>
+            <div><span>M2</span><b>96%</b><i style="--v:96%"></i></div>
+            <div><span>M3</span><b>97%</b><i style="--v:97%"></i></div>
+            <div><span>M4</span><b>99%</b><i style="--v:99%"></i></div>
+          </div>
+
+          <div class="subheading"><span>CARGA OPERACIONAL</span></div>
+          <div class="load-ring">
+            <div class="ring" id="loadRing"><strong id="loadValue">72<small>%</small></strong></div>
+            <div><span>PESO TOTAL</span><b>1,34 kg</b><span>AUTONOMIA</span><b id="autonomy">28 min</b></div>
+          </div>
+          <button class="primary-button" id="takeoffBtn"><span>INICIAR VOO</span><i>▶</i></button>
+        </aside>
+      </section>
+
+      <footer class="footer">
+        <div><span>LAT</span><b>-23.550520</b></div>
+        <div><span>LON</span><b>-46.633308</b></div>
+        <div><span>MODELO</span><b>NOVA X1 PRO</b></div>
+        <div class="footer-status"><i></i> LINK SEGURO</div>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
