@@ -66,20 +66,63 @@ document.querySelectorAll(".view-tabs button").forEach((button) => {
 
 const parts = {
   motores: ["Motores brushless X280", "4 × 1500 KV", "98%"],
+  motor2: ["Motor brushless M2", "1500 KV · 12 cm", "96%"],
+  motor3: ["Motor brushless M3", "1500 KV · 12 cm", "97%"],
+  motor4: ["Motor brushless M4", "1500 KV · 12 cm", "99%"],
   camera: ["Câmera stabilizada 4K", "Sensor 1/2, 4K/60fps", "OK"],
   bateria: ["Bateria LiPo inteligente", "6S · 22.2V · 5200mAh", "86%"],
-  gps: ["Módulo GPS / GNSS", "12 satélites · RTK ready", "FIX"]
+  gps: ["Módulo GPS / GNSS", "12 satélites · RTK ready", "FIX"],
+  esc: ["Controladores ESC", "4 × 40A BLHeli · 6S", "OK"],
+  led: ["LED de estado", "RGB · posição · emergência", "OK"]
 };
-document.querySelectorAll(".hotspot").forEach((hotspot) => {
-  hotspot.addEventListener("click", () => {
-    const [name, spec, status] = parts[hotspot.dataset.part];
+function showPart(partId) {
+    const [name, spec, status] = parts[partId];
     document.getElementById("partName").textContent = name;
     document.getElementById("partSpec").textContent = spec;
     document.getElementById("partStatus").textContent = status;
     partCard.classList.add("open");
-  });
+    document.querySelectorAll(".inspection-list button").forEach((button) =>
+      button.classList.toggle("active", button.dataset.part === partId));
+}
+document.querySelectorAll(".hotspot, .inspection-list button").forEach((button) => {
+  button.addEventListener("click", () => showPart(button.dataset.part));
 });
 document.getElementById("closePart").addEventListener("click", () => partCard.classList.remove("open"));
+
+let dragStart = null;
+scene.addEventListener("pointerdown", (event) => {
+  if (event.target.closest(".hotspot")) return;
+  dragStart = { x: event.clientX, y: event.clientY, yaw: Number(yaw.value), pitch: Number(pitch.value) };
+  scene.classList.add("dragging");
+  scene.setPointerCapture(event.pointerId);
+});
+scene.addEventListener("pointermove", (event) => {
+  if (!dragStart) return;
+  yaw.value = Math.round((dragStart.yaw + (event.clientX - dragStart.x) / 3 + 360) % 360);
+  pitch.value = Math.max(-30, Math.min(30, Math.round(dragStart.pitch + (event.clientY - dragStart.y) / 4)));
+  updateControls();
+});
+scene.addEventListener("pointerup", () => { dragStart = null; scene.classList.remove("dragging"); });
+
+window.addEventListener("keydown", (event) => {
+  const key = event.key.toLowerCase();
+  if (["w","a","s","d","arrowup","arrowdown","arrowleft","arrowright"].includes(key)) event.preventDefault();
+  if (key === "w" || key === "arrowup") throttle.value = Math.min(100, Number(throttle.value) + 3);
+  if (key === "s" || key === "arrowdown") throttle.value = Math.max(0, Number(throttle.value) - 3);
+  if (key === "a" || key === "arrowleft") yaw.value = (Number(yaw.value) - 3 + 360) % 360;
+  if (key === "d" || key === "arrowright") yaw.value = (Number(yaw.value) + 3) % 360;
+  if (key === " ") { event.preventDefault(); takeoffBtn.click(); }
+  updateControls();
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  throttle.value = 68;
+  pitch.value = 12;
+  yaw.value = 34;
+  baseAlt = 42.8;
+  baseSpeed = 18.4;
+  updateControls();
+});
 
 let battery = 86;
 setInterval(() => {

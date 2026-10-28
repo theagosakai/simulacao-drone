@@ -40,6 +40,7 @@
             <label><span>Aceleração <b id="throttleLabel">68%</b></span><input id="throttle" type="range" min="0" max="100" value="68" /></label>
             <label><span>Inclinação <b id="pitchLabel">12°</b></span><input id="pitch" type="range" min="-30" max="30" value="12" /></label>
             <label><span>Direção (yaw) <b id="yawLabel">34°</b></span><input id="yaw" type="range" min="0" max="360" value="34" /></label>
+            <div class="keyboard-tip"><span>WASD</span> controle manual <button id="resetBtn" type="button">RESETAR</button></div>
           </div>
         </aside>
 
@@ -93,9 +94,14 @@
                 </g>
                 <g class="inspection-hotspots">
                   <g class="hotspot" data-part="motores" transform="translate(112 145)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="motor2" transform="translate(588 145)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="motor3" transform="translate(112 300)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="motor4" transform="translate(588 300)"><circle r="16"/><circle r="7"/></g>
                   <g class="hotspot" data-part="camera" transform="translate(350 210)"><circle r="16"/><circle r="7"/></g>
                   <g class="hotspot" data-part="bateria" transform="translate(350 286)"><circle r="16"/><circle r="7"/></g>
                   <g class="hotspot" data-part="gps" transform="translate(350 155)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="esc" transform="translate(278 254)"><circle r="16"/><circle r="7"/></g>
+                  <g class="hotspot" data-part="led" transform="translate(422 254)"><circle r="16"/><circle r="7"/></g>
                 </g>
               </svg>
             </div>
@@ -106,6 +112,18 @@
               <strong id="partName">Câmera stabilizada 4K</strong>
               <div class="part-spec"><span id="partSpec">Gimbal 3 eixos</span><b id="partStatus">OK</b></div>
             </div>
+              <div class="inspection-list" id="inspectionList">
+                <div class="inspection-title"><span>COMPONENTES</span><b>9</b></div>
+                <button type="button" data-part="camera"><i></i><span>Câmera 4K</span><b>OK</b></button>
+                <button type="button" data-part="motores"><i></i><span>Motor M1</span><b>98%</b></button>
+                <button type="button" data-part="motor2"><i></i><span>Motor M2</span><b>96%</b></button>
+                <button type="button" data-part="motor3"><i></i><span>Motor M3</span><b>97%</b></button>
+                <button type="button" data-part="motor4"><i></i><span>Motor M4</span><b>99%</b></button>
+                <button type="button" data-part="bateria"><i></i><span>Bateria LiPo</span><b>86%</b></button>
+                <button type="button" data-part="gps"><i></i><span>GPS / GNSS</span><b>FIX</b></button>
+                <button type="button" data-part="esc"><i></i><span>Controladores ESC</span><b>OK</b></button>
+                <button type="button" data-part="led"><i></i><span>LED de estado</span><b>OK</b></button>
+              </div>
           </div>
         </section>
 
