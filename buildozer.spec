@@ -5,7 +5,7 @@ package.domain = org.theagosakai
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
-requirements = python3,kivy==2.3.1
+requirements = hostpython3==3.11.9,python3==3.11.9,kivy==2.3.1
 orientation = landscape
 fullscreen = 0
 android.permissions = INTERNET
